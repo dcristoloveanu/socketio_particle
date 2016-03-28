@@ -1,0 +1,7 @@
+{
+    "name": "socketio_particle",
+    "author": "Dan Cristoloveanu",
+    "license": "MIT",
+    "version": "0.0.1",
+    "description": "socketio for particle"
+}
