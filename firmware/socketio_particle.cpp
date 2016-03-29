@@ -104,7 +104,7 @@ static int add_pending_io(SOCKET_IO_INSTANCE* socket_io_instance, const unsigned
 
 CONCRETE_IO_HANDLE socketio_create(void* io_create_parameters, LOGGER_LOG logger_log)
 {
-    SOCKETIO_CONFIG* socket_io_config = io_create_parameters;
+    SOCKETIO_CONFIG* socket_io_config = (SOCKETIO_CONFIG*)io_create_parameters;
     SOCKET_IO_INSTANCE* result;
 
     if (socket_io_config == NULL)
