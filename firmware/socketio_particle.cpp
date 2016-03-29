@@ -11,6 +11,7 @@
 #include <string.h>
 #include "socketio.h"
 #include "list.h"
+#include "tcpclient_c.h"
 
 typedef enum IO_STATE_TAG
 {
@@ -41,6 +42,7 @@ typedef struct SOCKET_IO_INSTANCE_TAG
     int port;
     IO_STATE io_state;
     LIST_HANDLE pending_io_list;
+    TCPCLIENT_HANDLE tcp_client;
 } SOCKET_IO_INSTANCE;
 
 static const IO_INTERFACE_DESCRIPTION socket_io_interface_description =
@@ -133,14 +135,26 @@ CONCRETE_IO_HANDLE socketio_create(void* io_create_parameters, LOGGER_LOG logger
                 }
                 else
                 {
-                    strcpy(result->hostname, socket_io_config->hostname);
-                    result->port = socket_io_config->port;
-                    result->on_bytes_received = NULL;
-                    result->on_io_error = NULL;
-                    result->logger_log = logger_log;
-                    result->on_bytes_received_context = NULL;
-                    result->on_io_error_context = NULL;
-                    result->io_state = IO_STATE_CLOSED;
+                    result->tcp_client = tcpclient_create();
+                    if (result->tcp_client == NULL)
+                    {
+                        free(result->hostname);
+                        list_destroy(result->pending_io_list);
+                        free(result);
+                        result = NULL;
+                    }
+                    else
+                    {
+                        strcpy(result->hostname, socket_io_config->hostname);
+                        result->port = socket_io_config->port;
+                        result->on_bytes_received = NULL;
+                        result->on_io_error = NULL;
+                        result->logger_log = logger_log;
+                        result->on_bytes_received_context = NULL;
+                        result->on_io_error_context = NULL;
+
+                        result->io_state = IO_STATE_CLOSED;
+                    }
                 }
             }
         }
@@ -172,6 +186,9 @@ void socketio_destroy(CONCRETE_IO_HANDLE socket_io)
 
         list_destroy(socket_io_instance->pending_io_list);
         free(socket_io_instance->hostname);
+
+        tcpclient_destroy(socket_io_instance->tcp_client);
+
         free(socket_io);
     }
 }
