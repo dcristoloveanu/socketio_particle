@@ -300,7 +300,7 @@ int socketio_send(CONCRETE_IO_HANDLE socket_io, const void* buffer, size_t size,
             LIST_ITEM_HANDLE first_pending_io = list_get_head_item(socket_io_instance->pending_io_list);
             if (first_pending_io != NULL)
             {
-                if (add_pending_io(socket_io_instance, buffer, size, on_send_complete, callback_context) != 0)
+                if (add_pending_io(socket_io_instance, (const unsigned char*)buffer, size, on_send_complete, callback_context) != 0)
                 {
                     result = __LINE__;
                 }
