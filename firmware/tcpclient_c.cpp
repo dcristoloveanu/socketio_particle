@@ -28,7 +28,7 @@ TCPCLIENT_HANDLE tcpclient_create(void)
     return new TCPClient();
 }
 
-void tcpclient_destroy(TCPSOCKETCONNECTION_HANDLE tcp_client)
+void tcpclient_destroy(TCPCLIENT_HANDLE tcp_client)
 {
 	delete (TCPClient*)tcp_client;
 }
