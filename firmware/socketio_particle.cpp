@@ -311,14 +311,9 @@ int socketio_send(CONCRETE_IO_HANDLE socket_io, const void* buffer, size_t size,
             }
             else
             {
-                int send_result = size/* = tcpsocketconnection_send(socket_io_instance->tcp_socket_connection, buffer, size)*/;
+                int send_result = tcpclient_write(socket_io_instance->tcp_client, buffer, size)*/;
                 if (send_result != size)
                 {
-                    if (send_result < 0)
-                    {
-                        send_result = 0;
-                    }
-
                     /* queue data */
                     if (add_pending_io(socket_io_instance, (unsigned char*)buffer + send_result, size - send_result, on_send_complete, callback_context) != 0)
                     {
