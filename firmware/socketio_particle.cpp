@@ -8,6 +8,7 @@
 
 #include <stddef.h>
 #include <stdio.h>
+#include <stdint.h>
 #include <string.h>
 #include "socketio.h"
 #include "list.h"
@@ -353,7 +354,7 @@ void socketio_dowork(CONCRETE_IO_HANDLE socket_io)
                     break;
                 }
 
-                int send_result = tcpclient_write(socket_io_instance->tcp_client, (const char*)pending_socket_io->bytes, pending_socket_io->size);
+                int send_result = tcpclient_write(socket_io_instance->tcp_client, (const uint8_t*)pending_socket_io->bytes, pending_socket_io->size);
                 if (send_result < pending_socket_io->size)
                 {
                     /* send something, wait for the rest */
@@ -388,7 +389,7 @@ void socketio_dowork(CONCRETE_IO_HANDLE socket_io)
                     to_receive = available;
                 }
 
-                received = tcpclient_read(socket_io_instance->tcp_client, (char*)recv_bytes, to_receive);
+                received = tcpclient_read(socket_io_instance->tcp_client, (uint8_t*)recv_bytes, to_receive);
                 if (received > 0)
                 {
                     if (socket_io_instance->on_bytes_received != NULL)
