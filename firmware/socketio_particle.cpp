@@ -298,7 +298,7 @@ int socketio_send(CONCRETE_IO_HANDLE socket_io, const void* buffer, size_t size,
             }
             else
             {
-                int send_result = tcpclient_write(socket_io_instance->tcp_client, (const uint8_t*)buffer, size);
+                size_t send_result = tcpclient_write(socket_io_instance->tcp_client, (const uint8_t*)buffer, size);
                 if (send_result != size)
                 {
                     /* queue data */
@@ -353,21 +353,11 @@ void socketio_dowork(CONCRETE_IO_HANDLE socket_io)
                     break;
                 }
 
-                int send_result = tcpclient_send(socket_io_instance->tcp_client, (const char*)pending_socket_io->bytes, pending_socket_io->size);
-                if (send_result != pending_socket_io->size)
+                int send_result = tcpclient_write(socket_io_instance->tcp_client, (const char*)pending_socket_io->bytes, pending_socket_io->size);
+                if (send_result < pending_socket_io->size)
                 {
-                    if (send_result < 0)
-                    {
-                        // Bad error.  Indicate as much.
-                        socket_io_instance->io_state = IO_STATE_ERROR;
-                        indicate_error(socket_io_instance);
-                        break;
-                    }
-                    else
-                    {
-                        /* send something, wait for the rest */
-                        (void)memmove(pending_socket_io->bytes, pending_socket_io->bytes + send_result, pending_socket_io->size - send_result);
-                    }
+                    /* send something, wait for the rest */
+                    (void)memmove(pending_socket_io->bytes, pending_socket_io->bytes + send_result, pending_socket_io->size - send_result);
                 }
                 else
                 {
