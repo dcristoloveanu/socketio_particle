@@ -298,7 +298,7 @@ int socketio_send(CONCRETE_IO_HANDLE socket_io, const void* buffer, size_t size,
             }
             else
             {
-                int send_result = tcpclient_write(socket_io_instance->tcp_client, buffer, size)*/;
+                int send_result = tcpclient_write(socket_io_instance->tcp_client, (const uint8_t*)buffer, size)*/;
                 if (send_result != size)
                 {
                     /* queue data */
