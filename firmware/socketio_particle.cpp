@@ -113,7 +113,7 @@ CONCRETE_IO_HANDLE socketio_create(void* io_create_parameters, LOGGER_LOG logger
     }
     else
     {
-        result = malloc(sizeof(SOCKET_IO_INSTANCE));
+        result = (SOCKET_IO_INSTANCE*)malloc(sizeof(SOCKET_IO_INSTANCE));
         if (result != NULL)
         {
             result->pending_io_list = list_create();
