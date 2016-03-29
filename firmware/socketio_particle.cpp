@@ -204,40 +204,27 @@ int socketio_open(CONCRETE_IO_HANDLE socket_io, ON_IO_OPEN_COMPLETE on_io_open_c
     }
     else
     {
-        /*
-        socket_io_instance->tcp_socket_connection = tcpsocketconnection_create();
-        if (socket_io_instance->tcp_socket_connection == NULL)
+        if (tcpclient_connect(socket_io_instance->tcp_client, socket_io_instance->hostname, socket_io_instance->port) == 0)
         {
             result = __LINE__;
         }
         else
         {
-            if (tcpsocketconnection_connect(socket_io_instance->tcp_socket_connection, socket_io_instance->hostname, socket_io_instance->port) != 0)
+            socket_io_instance->on_bytes_received = on_bytes_received;
+            socket_io_instance->on_bytes_received_context = on_bytes_received_context;
+
+            socket_io_instance->on_io_error = on_io_error;
+            socket_io_instance->on_io_error_context = on_io_error_context;
+
+            socket_io_instance->io_state = IO_STATE_OPEN;
+
+            if (on_io_open_complete != NULL)
             {
-                tcpsocketconnection_destroy(socket_io_instance->tcp_socket_connection);
-                socket_io_instance->tcp_socket_connection = NULL;
-                result = __LINE__;
+                on_io_open_complete(on_io_open_complete_context, IO_OPEN_OK);
             }
-            else
-            {
-                tcpsocketconnection_set_blocking(socket_io_instance->tcp_socket_connection, false, 0);
 
-                socket_io_instance->on_bytes_received = on_bytes_received;
-                socket_io_instance->on_bytes_received_context = on_bytes_received_context;
-
-                socket_io_instance->on_io_error = on_io_error;
-                socket_io_instance->on_io_error_context = on_io_error_context;
-
-                socket_io_instance->io_state = IO_STATE_OPEN;
-
-                if (on_io_open_complete != NULL)
-                {
-                    on_io_open_complete(on_io_open_complete_context, IO_OPEN_OK);
-                }
-
-                result = 0;
-            }
-        }*/
+            result = 0;
+        }
     }
 
     return result;
