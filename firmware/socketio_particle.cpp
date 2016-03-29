@@ -353,7 +353,7 @@ void socketio_dowork(CONCRETE_IO_HANDLE socket_io)
                     break;
                 }
 
-                int send_result = pending_socket_io->size /*tcpsocketconnection_send(socket_io_instance->tcp_socket_connection, (const char*)pending_socket_io->bytes, pending_socket_io->size)*/;
+                int send_result = tcpclient_send(socket_io_instance->tcp_client, (const char*)pending_socket_io->bytes, pending_socket_io->size);
                 if (send_result != pending_socket_io->size)
                 {
                     if (send_result < 0)
@@ -391,7 +391,14 @@ void socketio_dowork(CONCRETE_IO_HANDLE socket_io)
             while (received > 0)
             {
                 unsigned char recv_bytes[128];
-                received = 0 /*tcpsocketconnection_receive(socket_io_instance->tcp_socket_connection, (char*)recv_bytes, sizeof(recv_bytes))*/;
+                int to_receive = sizeof(recv_bytes);
+                int available = tcpclient_available(socket_io_instance->tcp_client);
+                if (to_receive > available)
+                {
+                    to_receive = available;
+                }
+
+                received = tcpclient_read(socket_io_instance->tcp_client, (char*)recv_bytes, to_receive);
                 if (received > 0)
                 {
                     if (socket_io_instance->on_bytes_received != NULL)
