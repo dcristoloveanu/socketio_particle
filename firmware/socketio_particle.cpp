@@ -376,12 +376,9 @@ void socketio_dowork(CONCRETE_IO_HANDLE socket_io)
                 {
                     if (send_result < 0)
                     {
-                        if (send_result < UNABLE_TO_COMPLETE)
-                        {
-                            // Bad error.  Indicate as much.
-                            socket_io_instance->io_state = IO_STATE_ERROR;
-                            indicate_error(socket_io_instance);
-                        }
+                        // Bad error.  Indicate as much.
+                        socket_io_instance->io_state = IO_STATE_ERROR;
+                        indicate_error(socket_io_instance);
                         break;
                     }
                     else
