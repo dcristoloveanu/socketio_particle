@@ -13,7 +13,7 @@ extern "C" {
 	typedef void* TCPCLIENT_HANDLE;
 
 	extern TCPCLIENT_HANDLE tcpclient_create(void);
-    extern void tcpclient_destroy(TCPCLIENT_HANDLE tcp_client, TCPCLIENT_HANDLE tcp_client);
+    extern void tcpclient_destroy(TCPCLIENT_HANDLE tcp_client);
     extern int tcpclient_connect(TCPCLIENT_HANDLE tcp_client, const char *host, uint16_t port);
     extern size_t tcpclient_write(TCPCLIENT_HANDLE tcp_client, const uint8_t *buffer, size_t size);
     extern int tcpclient_read(TCPCLIENT_HANDLE tcp_client, uint8_t *buffer, size_t size);
