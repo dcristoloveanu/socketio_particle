@@ -17,25 +17,25 @@ void tcpclient_destroy(TCPCLIENT_HANDLE tcp_client)
 
 int tcpclient_connect(TCPCLIENT_HANDLE tcp_client, const char *host, uint16_t port)
 {
-    return (TCPClient*)tcp_client->connect(host, port);
+    return ((TCPClient*)tcp_client)->connect(host, port);
 }
 
 size_t tcpclient_write(TCPCLIENT_HANDLE tcp_client, const uint8_t *buffer, size_t size)
 {
-    return (TCPClient*)tcp_client->write(buffer, size);
+    return ((TCPClient*)tcp_client)->write(buffer, size);
 }
 
 int tcpclient_read(TCPCLIENT_HANDLE tcp_client, uint8_t *buffer, size_t size)
 {
-    return (TCPClient*)tcp_client->write(buffer, size);
+    return ((TCPClient*)tcp_client)->write(buffer, size);
 }
 
 int tcpclient_available(TCPCLIENT_HANDLE tcp_client)
 {
-    return (TCPClient*)tcp_client->available();
+    return ((TCPClient*)tcp_client)->available();
 }
 
 void tcpclient_stop(TCPCLIENT_HANDLE tcp_client)
 {
-    return (TCPClient*)tcp_client->stop();
+    return ((TCPClient*)tcp_client)->stop();
 }
