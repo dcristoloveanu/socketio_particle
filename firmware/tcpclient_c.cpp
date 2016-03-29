@@ -20,6 +20,7 @@
 */
 
 #include <stddef.h>
+#include "application.h"
 #include "tcpclient_c.h"
 
 TCPCLIENT_HANDLE tcpclient_create(void)
